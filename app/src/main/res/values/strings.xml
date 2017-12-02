@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">CS GO Team Creator</string>
+    <string-array name="mm_ranks">
+        <item>Silver 1</item>
+        <item>Silver 2</item>
+        <item>Silver 3</item>
+        <item>Silver 4</item>
+        <item>Silver Elite</item>
+        <item>Silver Elite Master</item>
+        <item>Gold Nova 1</item>
+        <item>Gold Nova 2</item>
+        <item>Gold Nova 3</item>
+        <item>Gold Nova Master</item>
+        <item>Master Guardian 1</item>
+        <item>Master Guardian 2</item>
+        <item>Master Guardian Elite</item>
+        <item>Distinguished Master Guardian</item>
+        <item>Legendary Eagle</item>
+        <item>Legendary Eagle Master</item>
+        <item>Supreme Master First Class</item>
+        <item>The Global Elite</item>
+    </string-array>
+    <string-array name="esea_ranks">
+        <item>None</item>
+        <item>D-</item>
+        <item>D</item>
+        <item>D+</item>
+        <item>C-</item>
+        <item>C</item>
+        <item>C+</item>
+        <item>B-</item>
+        <item>B</item>
+        <item>B+</item>
+        <item>A-</item>
+        <item>A</item>
+        <item>A+</item>
+    </string-array>
+    <string-array name="positions">
+        <item>Entry Fragger</item>
+        <item>Playmaker</item>
+        <item>Strat Caller</item>
+        <item>Support</item>
+        <item>Awper</item>
+        <item>Lurker</item>
+    </string-array>
+    <string-array name="weapons">
+        <item>AK-47</item>
+        <item>M4A4</item>
+        <item>M4A1-S</item>
+        <item>AWP</item>
+        <item>Desert Eagle</item>
+        <item>CZ75 Auto</item>
+        <item>P250</item>
+        <item>USP-S</item>
+        <item>Glock-18</item>
+    </string-array>
+</resources>
