@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "660530482901",
+    "firebase_url": "https://csgoteamcalculator.firebaseio.com",
+    "project_id": "csgoteamcalculator",
+    "storage_bucket": "csgoteamcalculator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660530482901:android:686829c0807d47d2",
+        "android_client_info": {
+          "package_name": "com.hardboiled.csgoteamcreator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660530482901-r28e0sf33s3iqcmdp1hovhv2da98isfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUlpO9Mvq0Q-qmIg3UjujWRAZ7Z0liBDY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
