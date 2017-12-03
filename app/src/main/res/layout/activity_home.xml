@@ -8,7 +8,7 @@
     tools:context="com.hardboiled.csgoteamcreator.HomeActivity">
 
     <TextView
-        android:id="@+id/value_username"
+        android:id="@+id/value_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -29,7 +29,7 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/value_username" />
+        app:layout_constraintTop_toBottomOf="@+id/value_email" />
 
     <TextView
         android:id="@+id/title_position"

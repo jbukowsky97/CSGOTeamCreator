@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity {
 
     public static int SIGN_UP_RESULT = 1;
+
+    private EditText email;
+    private EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +36,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(signupIntent, SIGN_UP_RESULT);
             }
         });
+
+        email = (EditText) findViewById(R.id.value_email);
+        password = (EditText) findViewById(R.id.password_text);
     }
 }
