@@ -15,13 +15,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -36,7 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Spinner weaponSpinner;
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference mDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         email = (EditText) findViewById(R.id.email_text);
         username = (EditText) findViewById(R.id.username_text);
@@ -85,13 +83,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String emailStr = email.getText().toString();
-                String usernameStr = username.getText().toString();
+                final String usernameStr = username.getText().toString();
                 String passwordStr = password.getText().toString();
-                String rankSpinnerStr = rankSpinner.getSelectedItem().toString();
+                final String rankSpinnerStr = rankSpinner.getSelectedItem().toString();
                 String eseaNameStr = eseaName.getText().toString();
-                String eseaRankSpinnerStr = eseaRankSpinner.getSelectedItem().toString();
-                String roleSpinnerStr = roleSpinner.getSelectedItem().toString();
-                String weaponSpinnerStr = weaponSpinner.getSelectedItem().toString();
+                final String eseaRankSpinnerStr = eseaRankSpinner.getSelectedItem().toString();
+                final String roleSpinnerStr = roleSpinner.getSelectedItem().toString();
+                final String weaponSpinnerStr = weaponSpinner.getSelectedItem().toString();
 
                 if (!emailStr.matches("[\\w\\.]+@\\w+\\.\\w+")) {
                     Snackbar.make(findViewById(R.id.activity_sign_up_id), "Enter a valid email",
@@ -120,22 +118,32 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            System.out.println("JFIEOSJisjfisEJoiseJOSEFJOFESJIOEFJIOEFSJ");
+                            Snackbar.make(findViewById(R.id.activity_sign_up_id), "Successfully logged in",
+                                    Snackbar.LENGTH_SHORT)
+                                    .show();
 
+                            HashMap<String, String> values = new HashMap<String, String>();
+                            values.put("uid", task.getResult().getUser().getUid());
+                            values.put("username", usernameStr);
+                            values.put("rank", rankSpinnerStr);
+                            values.put("eseaname", eseaNameFinal);
+                            values.put("esearank", eseaRankSpinnerStr);
+                            values.put("role", roleSpinnerStr);
+                            values.put("weapon", weaponSpinnerStr);
+
+                            databaseReference.child("users").child(usernameStr).setValue(values);
                         }else {
+                            Snackbar.make(findViewById(R.id.activity_sign_up_id), "An error has occurred",
+                                    Snackbar.LENGTH_SHORT)
+                                    .show();
+                            return;
                         }
                     }
                 });
 
-                LinkedList<String> values = new LinkedList<String>();
-                values.add(usernameStr);
-                values.add(rankSpinnerStr);
-                values.add(eseaNameFinal);
-                values.add(eseaRankSpinnerStr);
-                values.add(roleSpinnerStr);
-                values.add(weaponSpinnerStr);
 
-                mDatabase.child("users").child(firebaseAuth.getCurrentUser().getUid()).setValue(values);
+                //values.put("uid", firebaseAuth.getCurrentUser().getUid());
+
             }
         });
     }
