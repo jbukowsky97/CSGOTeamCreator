@@ -140,10 +140,6 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-                //values.put("uid", firebaseAuth.getCurrentUser().getUid());
-
             }
         });
     }
