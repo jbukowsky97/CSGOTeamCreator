@@ -1,5 +1,6 @@
 package com.hardboiled.csgoteamcreator;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -27,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText email;
     private EditText username;
     private EditText password;
+    private EditText confirmPassword;
     private Spinner rankSpinner;
     private EditText eseaName;
     private Spinner eseaRankSpinner;
@@ -47,6 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email_text);
         username = (EditText) findViewById(R.id.username_text);
         password = (EditText) findViewById(R.id.password_text);
+        confirmPassword = (EditText) findViewById(R.id.password_confirm_text);
         rankSpinner = (Spinner) findViewById(R.id.rank_spinner);
         eseaName = (EditText) findViewById(R.id.esea_name_text);
         eseaRankSpinner = (Spinner) findViewById(R.id.esea_rank_spinner);
@@ -85,13 +88,21 @@ public class SignUpActivity extends AppCompatActivity {
                 String emailStr = email.getText().toString();
                 final String usernameStr = username.getText().toString();
                 String passwordStr = password.getText().toString();
+                String confirmPasswordStr = confirmPassword.getText().toString();
                 final String rankSpinnerStr = rankSpinner.getSelectedItem().toString();
                 String eseaNameStr = eseaName.getText().toString();
                 final String eseaRankSpinnerStr = eseaRankSpinner.getSelectedItem().toString();
                 final String roleSpinnerStr = roleSpinner.getSelectedItem().toString();
                 final String weaponSpinnerStr = weaponSpinner.getSelectedItem().toString();
 
-                if (!emailStr.matches("[\\w\\.]+@\\w+\\.\\w+")) {
+                if (emailStr.isEmpty() || usernameStr.isEmpty() || passwordStr.isEmpty() || confirmPasswordStr.isEmpty() || rankSpinnerStr.isEmpty() || eseaRankSpinnerStr.isEmpty() || roleSpinnerStr.isEmpty() || weaponSpinnerStr.isEmpty()) {
+                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Please fill in all necessary values",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                if (!emailStr.matches("[\\w\\.]+@\\w+\\.[\\w\\.]+")) {
                     Snackbar.make(findViewById(R.id.activity_sign_up_id), "Enter a valid email",
                             Snackbar.LENGTH_SHORT)
                             .show();
@@ -105,8 +116,8 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (emailStr.isEmpty() || usernameStr.isEmpty() || passwordStr.isEmpty() || rankSpinnerStr.isEmpty() || eseaRankSpinnerStr.isEmpty() || roleSpinnerStr.isEmpty() || weaponSpinnerStr.isEmpty()) {
-                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Please fill in all necessary values",
+                if (!passwordStr.equals(confirmPasswordStr)) {
+                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Passwords do not match",
                             Snackbar.LENGTH_SHORT)
                             .show();
                     return;
@@ -132,6 +143,15 @@ public class SignUpActivity extends AppCompatActivity {
                             values.put("weapon", weaponSpinnerStr);
 
                             databaseReference.child("users").child(usernameStr).setValue(values);
+
+                            Intent homeIntent = new Intent(SignUpActivity.this, HomeActivity.class);
+                            homeIntent.putExtra("username", usernameStr);
+                            homeIntent.putExtra("rank", rankSpinnerStr);
+                            homeIntent.putExtra("eseaname", eseaNameFinal);
+                            homeIntent.putExtra("esearank", eseaRankSpinnerStr);
+                            homeIntent.putExtra("role", roleSpinnerStr);
+                            homeIntent.putExtra("weapon", weaponSpinnerStr);
+                            startActivity(homeIntent);
                         }else {
                             Snackbar.make(findViewById(R.id.activity_sign_up_id), "An error has occurred",
                                     Snackbar.LENGTH_SHORT)

@@ -20,15 +20,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
 
-    public static int SIGN_UP_RESULT = 1;
+public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText password;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
+
+    private Button login;
+    private Button createAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,59 +43,87 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.value_email);
         password = (EditText) findViewById(R.id.password_text);
 
-        Button login = (Button) this.findViewById(R.id.login_button);
+        login = (Button) this.findViewById(R.id.login_button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent teamIntent = new Intent(LoginActivity.this, TeamActivity.class);
+                startActivity(teamIntent);
+                /*setButtons(false);
+
+                if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+                    Snackbar.make(findViewById(R.id.login_activity_id), "Please enter an email and a password",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+                    setButtons(true);
+                    return;
+                }
                 firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Snackbar.make(findViewById(R.id.activity_sign_up_id), "Invalid credentials, please ensure the account exists.",
+                            Snackbar.make(findViewById(R.id.login_activity_id), "Invalid credentials, please ensure the account exists.",
                                     Snackbar.LENGTH_SHORT)
                                     .show();
+                            setButtons(true);
                             return;
-                        }
-                    }
-                });
-                final Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                databaseReference = FirebaseDatabase.getInstance().getReference();
-                String uid = firebaseAuth.getCurrentUser().getUid();
-                Query query = databaseReference.child("users").orderByChild("uid").equalTo(uid);
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot value : dataSnapshot.getChildren()) {
-                                homeIntent.putExtra(value.getKey(), value.getValue().toString());
-                            }
-                        } else {
-                            Snackbar.make(findViewById(R.id.activity_sign_up_id), "Unable to find user in database",
-                                    Snackbar.LENGTH_SHORT)
-                                    .show();
-                            return;
-                        }
-                    }
+                        }else {
+                            final Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                            databaseReference = FirebaseDatabase.getInstance().getReference();
+                            final String uid = task.getResult().getUser().getUid();
+                            Query query = databaseReference.child("users");
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot value : dataSnapshot.getChildren()) {
+                                            if (((HashMap<String, String>) value.getValue()).containsValue(uid)) {
+                                                for (Map.Entry<String, String> entry : ((HashMap<String, String>) value.getValue()).entrySet()) {
+                                                    homeIntent.putExtra(entry.getKey(), entry.getValue());
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        startActivity(homeIntent);
+                                        setButtons(true);
+                                    } else {
+                                        Snackbar.make(findViewById(R.id.activity_sign_up_id), "Unable to find user in database",
+                                                Snackbar.LENGTH_SHORT)
+                                                .show();
+                                        setButtons(true);
+                                        return;
+                                    }
+                                }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Snackbar.make(findViewById(R.id.activity_sign_up_id), "Operation cancelled.",
-                                Snackbar.LENGTH_SHORT)
-                                .show();
-                        return;
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Operation cancelled.",
+                                            Snackbar.LENGTH_SHORT)
+                                            .show();
+                                    setButtons(true);
+                                    return;
+                                }
+                            });
+                        }
                     }
-                });
-                startActivity(homeIntent);
+                });*/
             }
         });
 
-        Button createAccount = (Button) this.findViewById(R.id.create_account_button);
+        createAccount = (Button) this.findViewById(R.id.create_account_button);
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtons(false);
                 Intent signupIntent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivityForResult(signupIntent, SIGN_UP_RESULT);
+                startActivity(signupIntent);
+                setButtons(true);
             }
         });
+    }
+
+    private void setButtons(boolean enabled) {
+        login.setEnabled(enabled);
+        createAccount.setEnabled(enabled);
     }
 }
