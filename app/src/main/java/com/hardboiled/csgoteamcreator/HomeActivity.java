@@ -1,5 +1,6 @@
 package com.hardboiled.csgoteamcreator;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -24,12 +33,39 @@ public class HomeActivity extends AppCompatActivity {
 
     private HashMap<String, Integer> rankIcons;
 
+    private User currentUser;
+
+    private String uid;
+
+    private DatabaseReference databaseReference;
+
+    public static int CODE_CREATE_TEAM = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         initializeRankIcons();
+
+        Query query = databaseReference.child("users");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("LOADING USER");
+                findUser(dataSnapshot);
+                System.out.println("SETTING UP");
+                setup();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                return;
+            }
+        });
 
         username = (TextView) findViewById(R.id.value_username);
         mmRank = (ImageView) findViewById(R.id.mm_rank_image);
@@ -39,25 +75,15 @@ public class HomeActivity extends AppCompatActivity {
         weapon = (TextView) findViewById(R.id.value_favorite_weapon);
         searchButton = (Button) findViewById(R.id.search_button);
         teamButton = (Button) findViewById(R.id.team_button);
-
-        Intent i = this.getIntent();
-
-        username.setText(i.getStringExtra("username"));
-        String mmRankStr = i.getStringExtra("rank");
-        mmRank.setImageResource(rankIcons.get(mmRankStr));
-        eseaName.setText(i.getStringExtra("eseaname"));
-        eseaRank.setText(i.getStringExtra("esearank"));
-        role.setText(i.getStringExtra("role"));
-        weapon.setText(i.getStringExtra("weapon"));
-
-        String team = i.getStringExtra("team");
-        boolean leader = i.getBooleanExtra("leader", false);
-
-        if (team.equals("N/A")) {
-            teamButton.setText("Create Team");
-        }else {
-            teamButton.setText(team);
-        }
+        
+        username.setVisibility(View.INVISIBLE);
+        mmRank.setVisibility(View.INVISIBLE);
+        eseaName.setVisibility(View.INVISIBLE);
+        eseaRank.setVisibility(View.INVISIBLE);
+        role.setVisibility(View.INVISIBLE);
+        weapon.setVisibility(View.INVISIBLE);
+        searchButton.setVisibility(View.INVISIBLE);
+        teamButton.setVisibility(View.INVISIBLE);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +92,70 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(searchIntent);
             }
         });
+    }
+
+    private void setup() {
+        username.setText(currentUser.getUsername());
+        mmRank.setImageResource(currentUser.getRankId());
+        eseaName.setText(currentUser.getEseaName());
+        eseaRank.setText(currentUser.getEseaRank());
+        role.setText(currentUser.getRole());
+        weapon.setText(currentUser.getWeapon());
+
+        if (currentUser.getTeam().equals("N/A")) {
+            teamButton.setText("Create Team");
+            teamButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent createTeam = new Intent(HomeActivity.this, CreateTeamActivity.class);
+                    startActivityForResult(createTeam, CODE_CREATE_TEAM);
+                }
+            });
+        }else {
+            teamButton.setText(currentUser.getTeam());
+            teamButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent teamIntent = new Intent(HomeActivity.this, TeamActivity.class);
+                    teamIntent.putExtra("teamname", currentUser.getTeam());
+                    startActivity(teamIntent);
+                }
+            });
+        }
+
+        username.setVisibility(View.VISIBLE);
+        mmRank.setVisibility(View.VISIBLE);
+        eseaName.setVisibility(View.VISIBLE);
+        eseaRank.setVisibility(View.VISIBLE);
+        role.setVisibility(View.VISIBLE);
+        weapon.setVisibility(View.VISIBLE);
+        searchButton.setVisibility(View.VISIBLE);
+        teamButton.setVisibility(View.VISIBLE);
+    }
+
+    private void findUser(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.exists()) {
+            for (DataSnapshot value : dataSnapshot.getChildren()) {
+                if (((HashMap<String, String>) value.getValue()).get("uid").equals(uid)) {
+                    HashMap<String, String> userHash = ((HashMap<String, String>) value.getValue());
+                    String uidLocal = userHash.get("uid");
+                    String username = userHash.get("username");
+                    int rank = rankIcons.get(userHash.get("rank"));
+                    String eseaName = userHash.get("eseaname");
+                    String eseaRank = userHash.get("esearank");
+                    String role = userHash.get("role");
+                    String weapon = userHash.get("weapon");
+                    String team = (userHash.containsKey("team")) ? userHash.get("team") : "N/A";
+                    boolean leader = (userHash.containsKey("leader")) ? (userHash.get("leader").equals("true")) ? true : false : false;
+                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
+                }
+            }
+        } else {
+            Snackbar.make(findViewById(R.id.activity_profile_id), "Unable to load users",
+                    Snackbar.LENGTH_SHORT)
+                    .show();
+            return;
+        }
     }
 
     private void initializeRankIcons() {
@@ -88,6 +178,17 @@ public class HomeActivity extends AppCompatActivity {
         rankIcons.put("Legendary Eagle Master", R.drawable.legendary_eagle_master);
         rankIcons.put("Supreme Master First Class", R.drawable.supreme_master_first_class);
         rankIcons.put("The Global Elite", R.drawable.the_global_elite);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CODE_CREATE_TEAM) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent teamIntent = new Intent(HomeActivity.this, TeamActivity.class);
+                startActivity(teamIntent);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

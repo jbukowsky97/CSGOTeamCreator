@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                         }else {
                             final Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             databaseReference = FirebaseDatabase.getInstance().getReference();
-                            final String uid = task.getResult().getUser().getUid();
+                            /*final String uid = task.getResult().getUser().getUid();
                             Query query = databaseReference.child("users");
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -107,7 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                                     setButtons(true);
                                     return;
                                 }
-                            });
+                            });*/
+                            startActivity(homeIntent);
                         }
                     }
                 });

@@ -157,7 +157,7 @@ public class SignUpActivity extends AppCompatActivity {
                             databaseReference.child("users").child(usernameStr).setValue(values);
 
                             Intent homeIntent = new Intent(SignUpActivity.this, HomeActivity.class);
-                            homeIntent.putExtra("username", usernameStr);
+                            /*homeIntent.putExtra("username", usernameStr);
                             homeIntent.putExtra("url", urlStr);
                             homeIntent.putExtra("rank", rankSpinnerStr);
                             homeIntent.putExtra("eseaname", eseaNameFinal);
@@ -165,7 +165,7 @@ public class SignUpActivity extends AppCompatActivity {
                             homeIntent.putExtra("role", roleSpinnerStr);
                             homeIntent.putExtra("weapon", weaponSpinnerStr);
                             homeIntent.putExtra("team", "N/A");
-                            homeIntent.putExtra("leader", false);
+                            homeIntent.putExtra("leader", false);*/
                             startActivity(homeIntent);
                         }else {
                             Snackbar.make(findViewById(R.id.activity_sign_up_id), "An error has occurred",
