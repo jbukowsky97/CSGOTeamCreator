@@ -79,6 +79,12 @@ public class LoginActivity extends AppCompatActivity {
                                                 for (Map.Entry<String, String> entry : ((HashMap<String, String>) value.getValue()).entrySet()) {
                                                     homeIntent.putExtra(entry.getKey(), entry.getValue());
                                                 }
+                                                if (!((HashMap<String, String>) value.getValue()).containsKey("team")) {
+                                                    homeIntent.putExtra("team", "N/A");
+                                                }
+                                                if (!((HashMap<String, String>) value.getValue()).containsKey("leader")) {
+                                                    homeIntent.putExtra("leader", false);
+                                                }
                                                 break;
                                             }
                                         }

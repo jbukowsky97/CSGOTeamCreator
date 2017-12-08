@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -151,6 +150,8 @@ public class SignUpActivity extends AppCompatActivity {
                             homeIntent.putExtra("esearank", eseaRankSpinnerStr);
                             homeIntent.putExtra("role", roleSpinnerStr);
                             homeIntent.putExtra("weapon", weaponSpinnerStr);
+                            homeIntent.putExtra("team", "N/A");
+                            homeIntent.putExtra("leader", false);
                             startActivity(homeIntent);
                         }else {
                             Snackbar.make(findViewById(R.id.activity_sign_up_id), "An error has occurred",
