@@ -28,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private EditText confirmPassword;
+    private EditText url;
     private Spinner rankSpinner;
     private EditText eseaName;
     private Spinner eseaRankSpinner;
@@ -49,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.username_text);
         password = (EditText) findViewById(R.id.password_text);
         confirmPassword = (EditText) findViewById(R.id.password_confirm_text);
+        url = (EditText) findViewById(R.id.url_text);
         rankSpinner = (Spinner) findViewById(R.id.rank_spinner);
         eseaName = (EditText) findViewById(R.id.esea_name_text);
         eseaRankSpinner = (Spinner) findViewById(R.id.esea_rank_spinner);
@@ -88,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
                 final String usernameStr = username.getText().toString();
                 String passwordStr = password.getText().toString();
                 String confirmPasswordStr = confirmPassword.getText().toString();
+                final String urlStr = url.getText().toString();
                 final String rankSpinnerStr = rankSpinner.getSelectedItem().toString();
                 String eseaNameStr = eseaName.getText().toString();
                 final String eseaRankSpinnerStr = eseaRankSpinner.getSelectedItem().toString();
@@ -122,6 +125,13 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (urlStr.matches(".*\\W.*")) {
+                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Steam URL cannot have spaces or special characters",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 final String eseaNameFinal = (eseaNameStr.isEmpty()) ? "N/A" : eseaNameStr;
 
                 firebaseAuth.createUserWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
@@ -135,16 +145,20 @@ public class SignUpActivity extends AppCompatActivity {
                             HashMap<String, String> values = new HashMap<String, String>();
                             values.put("uid", task.getResult().getUser().getUid());
                             values.put("username", usernameStr);
+                            values.put("url", urlStr);
                             values.put("rank", rankSpinnerStr);
                             values.put("eseaname", eseaNameFinal);
                             values.put("esearank", eseaRankSpinnerStr);
                             values.put("role", roleSpinnerStr);
                             values.put("weapon", weaponSpinnerStr);
+                            values.put("team", "N/A");
+                            values.put("leader", "false");
 
                             databaseReference.child("users").child(usernameStr).setValue(values);
 
                             Intent homeIntent = new Intent(SignUpActivity.this, HomeActivity.class);
                             homeIntent.putExtra("username", usernameStr);
+                            homeIntent.putExtra("url", urlStr);
                             homeIntent.putExtra("rank", rankSpinnerStr);
                             homeIntent.putExtra("eseaname", eseaNameFinal);
                             homeIntent.putExtra("esearank", eseaRankSpinnerStr);
