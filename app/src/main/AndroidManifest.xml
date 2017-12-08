@@ -20,7 +20,8 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".CardViewActivity" />
-        <activity android:name=".TeamActivity"></activity>
+        <activity android:name=".TeamActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

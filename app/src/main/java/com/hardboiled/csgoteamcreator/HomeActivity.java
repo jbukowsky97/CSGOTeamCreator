@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         searchButton = (Button) findViewById(R.id.search_button);
 
         Intent i = this.getIntent();
+
         username.setText(i.getStringExtra("username"));
         String mmRankStr = i.getStringExtra("rank");
         if (mmRankStr.equals("Silver 1")) {

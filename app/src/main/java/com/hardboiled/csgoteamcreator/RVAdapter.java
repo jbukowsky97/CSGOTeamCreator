@@ -1,5 +1,6 @@
 package com.hardboiled.csgoteamcreator;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,8 +18,14 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.UserViewHolder> {
 
     private List<User> users;
+    //private RecyclerView recyclerView;
+    private View.OnClickListener onClickListener;
 
-    public RVAdapter(List<User> users) {
+    //private final View.OnClickListener mOnClickListener = new MyOnClickListener();
+
+    public RVAdapter(View.OnClickListener mOnClickListener, List<User> users) {
+        //this.recyclerView = recyclerView;
+        this.onClickListener = mOnClickListener;
         this.users = users;
     }
 
@@ -47,6 +54,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.UserViewHolder> {
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.player_card, viewGroup, false);
+        v.setOnClickListener(onClickListener);
         UserViewHolder userViewHolder = new UserViewHolder(v);
         return userViewHolder;
     }
@@ -63,4 +71,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.UserViewHolder> {
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
+    public User getUser(int index) {
+        return users.get(index);
+    }
+
+//    private class MyOnClickListener implements View.OnClickListener {
+//        @Override
+//        public void onClick(View view) {
+//            int itemPosition = recyclerView.getChildLayoutPosition(view);
+//            User user = users.get(itemPosition);
+//            Intent profileIntent = new Intent(recyclerView.getContext(), ProfileActivity.class);
+//
+//        }
+//    }
 }

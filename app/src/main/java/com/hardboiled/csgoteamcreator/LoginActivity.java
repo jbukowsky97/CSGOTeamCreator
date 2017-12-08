@@ -47,9 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent teamIntent = new Intent(LoginActivity.this, TeamActivity.class);
-                startActivity(teamIntent);
-                /*setButtons(false);
+                setButtons(false);
 
                 if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
                     Snackbar.make(findViewById(R.id.login_activity_id), "Please enter an email and a password",
@@ -106,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                             });
                         }
                     }
-                });*/
+                });
             }
         });
 

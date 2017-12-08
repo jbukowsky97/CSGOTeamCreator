@@ -6,16 +6,30 @@ package com.hardboiled.csgoteamcreator;
 
 public class User {
 
+    private String uid;
     private String username;
     private int rankId;
-    private String role;
+    private String eseaName;
     private String eseaRank;
+    private String role;
+    private String weapon;
+    private String team;
+    private boolean leader;
 
-    public User(String username, int rankId, String role, String eseaRank) {
+    public User(String uid, String username, int rankId, String eseaName, String eseaRank, String role, String weapon, String team, boolean leader) {
+        this.uid = uid;
         this.username = username;
         this.rankId = rankId;
-        this.role = role;
+        this.eseaName = eseaName;
         this.eseaRank = eseaRank;
+        this.role = role;
+        this.weapon = weapon;
+        this.team = team;
+        this.leader = leader;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public String getUsername() {
@@ -26,11 +40,27 @@ public class User {
         return rankId;
     }
 
-    public String getRole() {
-        return role;
+    public String getEseaName() {
+        return eseaName;
     }
 
     public String getEseaRank() {
         return eseaRank;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getWeapon() {
+        return weapon;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public boolean isLeader() {
+        return leader;
     }
 }
