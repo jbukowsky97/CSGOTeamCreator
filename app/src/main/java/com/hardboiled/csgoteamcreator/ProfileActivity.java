@@ -128,9 +128,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setButtons() {
-        if (!currentUser.isLeader() || currentUser.getTeam().equals("N/A") || !currentUser.getTeam().equals(userProfile.getTeam())) {
-            addTeamButton.setVisibility(View.INVISIBLE);
-            removeTeamButton.setVisibility(View.INVISIBLE);
+        if (currentUser.isLeader() && userProfile.getTeam().equals("N/A")) {
+            addTeamButton.setVisibility(View.VISIBLE);
+        }
+        if (currentUser.isLeader() && !currentUser.getTeam().equals("N/A") && userProfile.getTeam().equals(currentUser.getTeam())) {
+            removeTeamButton.setVisibility(View.VISIBLE);
         }
     }
 
