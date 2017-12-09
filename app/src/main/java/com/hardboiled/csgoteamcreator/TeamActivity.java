@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +21,7 @@ import java.util.LinkedList;
 
 public class TeamActivity extends AppCompatActivity {
 
+    private TextView teamNameView;
     private RecyclerView recyclerView;
     private RVAdapter rvAdapter;
     private LinkedList<User> users;
@@ -35,20 +37,32 @@ public class TeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         Intent i = getIntent();
         teamName = i.getStringExtra("teamname");
 
-        initializeRankIcons();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        teamNameView = (TextView) findViewById(R.id.team_name_value);
         recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
+
+        initializeRankIcons();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setup();
+    }
+
+    private void setup() {
+
+        teamNameView.setText(teamName);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
         users = new LinkedList<User>();
 
-        Query query = databaseReference.child("users");
+        final Query query = databaseReference.child("users");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

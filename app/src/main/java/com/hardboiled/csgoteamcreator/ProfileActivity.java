@@ -46,24 +46,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
         initializeRankIcons();
 
-        Query query = databaseReference.child("users");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                findUser(dataSnapshot);
-                setButtons();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                return;
-            }
-        });
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         usernameTextView = (TextView) findViewById(R.id.profile_value_username);
         mmRankImage = (ImageView) findViewById(R.id.profile_mm_rank_image);
@@ -100,6 +86,20 @@ public class ProfileActivity extends AppCompatActivity {
 
         addTeamButton.setVisibility(View.INVISIBLE);
         removeTeamButton.setVisibility(View.INVISIBLE);
+
+        Query query = databaseReference.child("users");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                findUser(dataSnapshot);
+                setButtons();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                return;
+            }
+        });
     }
 
     private void findUser(DataSnapshot dataSnapshot) {
@@ -128,12 +128,34 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setButtons() {
+        System.out.println(currentUser.getUid() + "\t" + userProfile.getUid());
+        if (currentUser.getUid().equals(userProfile.getUid())) {
+            return;
+        }
         if (currentUser.isLeader() && userProfile.getTeam().equals("N/A")) {
             addTeamButton.setVisibility(View.VISIBLE);
         }
         if (currentUser.isLeader() && !currentUser.getTeam().equals("N/A") && userProfile.getTeam().equals(currentUser.getTeam())) {
             removeTeamButton.setVisibility(View.VISIBLE);
         }
+        addTeamButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addTeamButton.setVisibility(View.INVISIBLE);
+                databaseReference.child("users").child(userProfile.getUsername()).child("team").setValue(currentUser.getTeam());
+                databaseReference.child("users").child(userProfile.getUsername()).child("leader").setValue("false");
+                removeTeamButton.setVisibility(View.VISIBLE);
+            }
+        });
+        removeTeamButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeTeamButton.setVisibility(View.INVISIBLE);
+                databaseReference.child("users").child(userProfile.getUsername()).child("team").setValue("N/A");
+                databaseReference.child("users").child(userProfile.getUsername()).child("leader").setValue("false");
+                addTeamButton.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void initializeRankIcons() {
