@@ -112,8 +112,10 @@ public class HomeActivity extends AppCompatActivity {
             teamButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    setButtonsEnabled(false);
                     Intent createTeam = new Intent(HomeActivity.this, CreateTeamActivity.class);
                     startActivityForResult(createTeam, CODE_CREATE_TEAM);
+                    setButtonsEnabled(true);
                 }
             });
         }else {
@@ -121,9 +123,11 @@ public class HomeActivity extends AppCompatActivity {
             teamButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    setButtonsEnabled(false);
                     Intent teamIntent = new Intent(HomeActivity.this, TeamActivity.class);
                     teamIntent.putExtra("teamname", currentUser.getTeam());
                     startActivity(teamIntent);
+                    setButtonsEnabled(true);
                 }
             });
         }
@@ -197,11 +201,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         Intent loginIntent = new Intent(HomeActivity.this, LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
+    }
+
+    private void setButtonsEnabled(boolean enabled) {
+        searchButton.setEnabled(enabled);
+        teamButton.setEnabled(enabled);
     }
 }

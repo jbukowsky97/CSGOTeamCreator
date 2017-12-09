@@ -31,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button teamButton;
     private Button addTeamButton;
     private Button removeTeamButton;
+    private Button openUrlButton;
 
     private DatabaseReference databaseReference;
 
@@ -60,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
         teamButton = (Button) findViewById(R.id.profile_team_button);
         addTeamButton = (Button) findViewById(R.id.profile_add_team);
         removeTeamButton = (Button) findViewById(R.id.profile_remove_team);
+        openUrlButton = (Button) findViewById(R.id.url_button);
 
         Intent i = this.getIntent();
         String uidLocal = i.getStringExtra("uid");
@@ -71,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
         String weapon = i.getStringExtra("weapon");
         String team = i.getStringExtra("team");
         boolean leader = i.getBooleanExtra("leader", false);
+        String url = i.getStringExtra("url");
         userProfile = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
 
         usernameTextView.setText(username);
@@ -141,19 +144,32 @@ public class ProfileActivity extends AppCompatActivity {
         addTeamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 addTeamButton.setVisibility(View.INVISIBLE);
                 databaseReference.child("users").child(userProfile.getUsername()).child("team").setValue(currentUser.getTeam());
                 databaseReference.child("users").child(userProfile.getUsername()).child("leader").setValue("false");
                 removeTeamButton.setVisibility(View.VISIBLE);
+                setButtonsEnabled(true);
             }
         });
         removeTeamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 removeTeamButton.setVisibility(View.INVISIBLE);
                 databaseReference.child("users").child(userProfile.getUsername()).child("team").setValue("N/A");
                 databaseReference.child("users").child(userProfile.getUsername()).child("leader").setValue("false");
                 addTeamButton.setVisibility(View.VISIBLE);
+                setButtonsEnabled(true);
+            }
+        });
+        openUrlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setButtonsEnabled(false);
+                Intent urlIntent = new Intent(ProfileActivity.this, SteamActivity.class);
+                startActivity(urlIntent);
+                setButtonsEnabled(true);
             }
         });
     }
@@ -178,5 +194,12 @@ public class ProfileActivity extends AppCompatActivity {
         rankIcons.put("Legendary Eagle Master", R.drawable.legendary_eagle_master);
         rankIcons.put("Supreme Master First Class", R.drawable.supreme_master_first_class);
         rankIcons.put("The Global Elite", R.drawable.the_global_elite);
+    }
+
+    private void setButtonsEnabled(boolean enabled) {
+        addTeamButton.setEnabled(enabled);
+        removeTeamButton.setEnabled(enabled);
+        teamButton.setEnabled(enabled);
+        openUrlButton.setEnabled(enabled);
     }
 }

@@ -21,6 +21,7 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".CardViewActivity" />
         <activity android:name=".TeamActivity" />
+        <activity android:name=".SteamActivity"></activity>
         <activity android:name=".CreateTeamActivity"></activity>
         <activity android:name=".ProfileActivity"></activity>
 

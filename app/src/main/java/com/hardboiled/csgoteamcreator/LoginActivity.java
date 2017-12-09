@@ -54,13 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setButtons(false);
+                setButtonsEnabled(false);
 
                 if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
                     Snackbar.make(findViewById(R.id.login_activity_id), "Please enter an email and a password",
                             Snackbar.LENGTH_SHORT)
                             .show();
-                    setButtons(true);
+                    setButtonsEnabled(true);
                     return;
                 }
                 firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.login_activity_id), "Invalid credentials, please ensure the account exists.",
                                     Snackbar.LENGTH_SHORT)
                                     .show();
-                            setButtons(true);
+                            setButtonsEnabled(true);
                             return;
                         }else {
                             final Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });*/
                             startActivity(homeIntent);
+                            setButtonsEnabled(true);
                         }
                     }
                 });
@@ -126,15 +127,15 @@ public class LoginActivity extends AppCompatActivity {
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setButtons(false);
+                setButtonsEnabled(false);
                 Intent signupIntent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(signupIntent);
-                setButtons(true);
+                setButtonsEnabled(true);
             }
         });
     }
 
-    private void setButtons(boolean enabled) {
+    private void setButtonsEnabled(boolean enabled) {
         login.setEnabled(enabled);
         createAccount.setEnabled(enabled);
     }

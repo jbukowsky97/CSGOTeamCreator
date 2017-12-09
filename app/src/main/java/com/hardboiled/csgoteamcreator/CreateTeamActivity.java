@@ -22,13 +22,9 @@ public class CreateTeamActivity extends AppCompatActivity {
 
     private EditText teamNameText;
     private Button createTeamButton;
-
     private DatabaseReference databaseReference;
-
     private HashMap<String, Integer> rankIcons;
-
     private User currentUser;
-
     private String uid;
 
     @Override
@@ -51,8 +47,9 @@ public class CreateTeamActivity extends AppCompatActivity {
         createTeamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 if (teamNameText.getText().toString().isEmpty()) {
-                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Please fill in all necessary values",
+                    Snackbar.make(findViewById(R.id.activity_create_team_id), "Please fill in all necessary values",
                             Snackbar.LENGTH_SHORT)
                             .show();
                     return;
@@ -73,6 +70,7 @@ public class CreateTeamActivity extends AppCompatActivity {
                         return;
                     }
                 });
+                setButtonsEnabled(true);
             }
         });
     }
@@ -90,7 +88,7 @@ public class CreateTeamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (teamNameText.getText().toString().isEmpty()) {
-                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Please fill in all necessary values",
+                    Snackbar.make(findViewById(R.id.activity_create_team_id), "Please fill in all necessary values",
                             Snackbar.LENGTH_SHORT)
                             .show();
                     return;
@@ -160,5 +158,9 @@ public class CreateTeamActivity extends AppCompatActivity {
         rankIcons.put("Legendary Eagle Master", R.drawable.legendary_eagle_master);
         rankIcons.put("Supreme Master First Class", R.drawable.supreme_master_first_class);
         rankIcons.put("The Global Elite", R.drawable.the_global_elite);
+    }
+
+    private void setButtonsEnabled(boolean enabled) {
+        createTeamButton.setEnabled(enabled);
     }
 }

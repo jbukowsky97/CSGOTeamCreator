@@ -34,6 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Spinner eseaRankSpinner;
     private Spinner roleSpinner;
     private Spinner weaponSpinner;
+    private Button signUp;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -82,10 +83,11 @@ public class SignUpActivity extends AppCompatActivity {
         weaponSpinner.setAdapter(weaponAdapter);
 
 
-        Button signUp = (Button) findViewById(R.id.sign_up_button);
+        signUp = (Button) findViewById(R.id.sign_up_button);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 String emailStr = email.getText().toString();
                 final String usernameStr = username.getText().toString();
                 String passwordStr = password.getText().toString();
@@ -175,7 +177,12 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 });
+                setButtonsEnabled(true);
             }
         });
+    }
+
+    private void setButtonsEnabled(boolean enabled) {
+        signUp.setEnabled(enabled);
     }
 }
