@@ -34,7 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 context)
                 // Set Icon
-                .setSmallIcon(R.drawable.the_global_elite)
+                .setSmallIcon(R.drawable.team_creator_logo)
                 // Set Ticker Message
                 .setTicker(message)
                 // Set Title
@@ -42,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 // Set Text
                 .setContentText(message)
                 // Add an Action Button below Notification
-                .addAction(R.drawable.the_global_elite, "Action Button", pIntent)
+                .addAction(R.drawable.team_creator_logo, "Action Button", pIntent)
                 // Set PendingIntent into Notification
                 .setContentIntent(pIntent)
                 // Dismiss Notification
