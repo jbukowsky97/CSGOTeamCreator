@@ -141,9 +141,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void createAlarm() {
         // wait 10 seconds
-        long timeToAdd = 10000;
+//        long timeToAdd = 10000;
         // wait a day
-//        long timeToAdd = 86400000;
+        long timeToAdd = 86400000;
         // starting alarm
         Intent intent = new Intent(LoginActivity.this, AlarmReceiver.class);
         intent.putExtra("NotificationText", "some text");
