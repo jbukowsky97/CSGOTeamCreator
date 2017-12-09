@@ -127,7 +127,8 @@ public class CreateTeamActivity extends AppCompatActivity {
                     String weapon = userHash.get("weapon");
                     String team = (userHash.containsKey("team")) ? userHash.get("team") : "N/A";
                     boolean leader = (userHash.containsKey("leader")) ? (userHash.get("leader").equals("true")) ? true : false : false;
-                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
+                    String url = userHash.get("url");
+                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader, url);
                 }
             }
         } else {

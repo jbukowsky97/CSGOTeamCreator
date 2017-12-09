@@ -15,8 +15,9 @@ public class User {
     private String weapon;
     private String team;
     private boolean leader;
+    private String url;
 
-    public User(String uid, String username, int rankId, String eseaName, String eseaRank, String role, String weapon, String team, boolean leader) {
+    public User(String uid, String username, int rankId, String eseaName, String eseaRank, String role, String weapon, String team, boolean leader, String url) {
         this.uid = uid;
         this.username = username;
         this.rankId = rankId;
@@ -26,6 +27,7 @@ public class User {
         this.weapon = weapon;
         this.team = team;
         this.leader = leader;
+        this.url = url;
     }
 
     public String getUid() {
@@ -62,5 +64,9 @@ public class User {
 
     public boolean isLeader() {
         return leader;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

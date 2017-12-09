@@ -27,12 +27,15 @@
     <ImageView
         android:id="@+id/mm_rank_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/the_global_elite" />
+        app:srcCompat="@drawable/the_global_elite"
+        tools:layout_editor_absoluteX="390dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/value_esea_rank" />
 
     <TextView
         android:id="@+id/edit_profile_title_role"

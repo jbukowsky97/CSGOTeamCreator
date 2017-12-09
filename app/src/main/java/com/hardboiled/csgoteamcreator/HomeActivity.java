@@ -31,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button searchButton;
     private Button teamButton;
     private Button updateProfileButton;
+    private Button urlButton;
 
     private HashMap<String, Integer> rankIcons;
 
@@ -65,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         searchButton = (Button) findViewById(R.id.search_button);
         teamButton = (Button) findViewById(R.id.team_button);
         updateProfileButton = (Button) findViewById(R.id.home_update_profile);
+        urlButton = (Button) findViewById(R.id.url_button);
 
         username.setVisibility(View.INVISIBLE);
         mmRank.setVisibility(View.INVISIBLE);
@@ -75,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         searchButton.setVisibility(View.INVISIBLE);
         teamButton.setVisibility(View.INVISIBLE);
         updateProfileButton.setVisibility(View.INVISIBLE);
+        urlButton.setVisibility(View.INVISIBLE);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -152,6 +155,7 @@ public class HomeActivity extends AppCompatActivity {
         searchButton.setVisibility(View.VISIBLE);
         teamButton.setVisibility(View.VISIBLE);
         updateProfileButton.setVisibility(View.VISIBLE);
+        urlButton.setVisibility(View.VISIBLE);
     }
 
     private void findUser(DataSnapshot dataSnapshot) {
@@ -168,7 +172,8 @@ public class HomeActivity extends AppCompatActivity {
                     String weapon = userHash.get("weapon");
                     String team = (userHash.containsKey("team")) ? userHash.get("team") : "N/A";
                     boolean leader = (userHash.containsKey("leader")) ? (userHash.get("leader").equals("true")) ? true : false : false;
-                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
+                    String url = userHash.get("url");
+                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader, url);
                 }
             }
         } else {

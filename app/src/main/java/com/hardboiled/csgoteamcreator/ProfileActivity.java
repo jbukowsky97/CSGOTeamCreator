@@ -74,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
         String team = i.getStringExtra("team");
         boolean leader = i.getBooleanExtra("leader", false);
         String url = i.getStringExtra("url");
-        userProfile = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
+        userProfile = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader, url);
 
         usernameTextView.setText(username);
         mmRankImage.setImageResource(rank);
@@ -119,7 +119,8 @@ public class ProfileActivity extends AppCompatActivity {
                     String weapon = userHash.get("weapon");
                     String team = (userHash.containsKey("team")) ? userHash.get("team") : "N/A";
                     boolean leader = (userHash.containsKey("leader")) ? (userHash.get("leader").equals("true")) ? true : false : false;
-                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
+                    String url = userHash.get("url");
+                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader, url);
                 }
             }
         } else {
@@ -168,6 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 setButtonsEnabled(false);
                 Intent urlIntent = new Intent(ProfileActivity.this, SteamActivity.class);
+                urlIntent.putExtra("url", userProfile.getUrl());
                 startActivity(urlIntent);
                 setButtonsEnabled(true);
             }

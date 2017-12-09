@@ -132,6 +132,7 @@ public class SearchActivity extends AppCompatActivity {
                 String weapon = "";
                 String team = "N/A";
                 boolean leader = false;
+                String url = "";
                 for (Map.Entry<String, String> userfield : ((HashMap<String, String>) value.getValue()).entrySet()) {
                     if (userfield.getKey().equals("uid")) {
                         uidLocal = userfield.getValue();
@@ -151,10 +152,12 @@ public class SearchActivity extends AppCompatActivity {
                         team = userfield.getValue();
                     }else if (userfield.getKey().equals("leader")) {
                         leader = (userfield.getValue().equals("true")) ? true : false;
+                    }else if (userfield.getKey().equals("url")) {
+                        url = userfield.getValue();
                     }
                 }
                 if (!uid.equals(uidLocal)) {
-                    users.add(new User(uidLocal, username, rankIcons.get(rank), eseaName, eseaRank, role, weapon, team, leader));
+                    users.add(new User(uidLocal, username, rankIcons.get(rank), eseaName, eseaRank, role, weapon, team, leader, url));
                 }
             }
             sort_users("MM Rank (High to Low)");

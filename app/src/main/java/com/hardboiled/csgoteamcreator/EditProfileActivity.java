@@ -137,7 +137,7 @@ public class EditProfileActivity extends AppCompatActivity {
         eseaRankSpinner.setSelection(stringNums.get(currentUser.getEseaRank()));
         roleSpinner.setSelection(stringNums.get(currentUser.getRole()));
         weaponSpinner.setSelection(stringNums.get(currentUser.getWeapon()));
-        //url.setText(currentUser.getUrl());
+        url.setText(currentUser.getUrl());
         eseaName.setText(currentUser.getEseaName());
 
         url.setVisibility(View.VISIBLE);
@@ -163,7 +163,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     String weapon = userHash.get("weapon");
                     String team = (userHash.containsKey("team")) ? userHash.get("team") : "N/A";
                     boolean leader = (userHash.containsKey("leader")) ? (userHash.get("leader").equals("true")) ? true : false : false;
-                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader);
+                    String url = userHash.get("url");
+                    currentUser = new User(uidLocal, username, rank, eseaName, eseaRank, role, weapon, team, leader, url);
                 }
             }
         } else {
