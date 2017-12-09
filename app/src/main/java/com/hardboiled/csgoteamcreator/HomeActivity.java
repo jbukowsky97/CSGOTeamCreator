@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView weapon;
     private Button searchButton;
     private Button teamButton;
+    private Button updateProfileButton;
 
     private HashMap<String, Integer> rankIcons;
 
@@ -63,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         weapon = (TextView) findViewById(R.id.value_favorite_weapon);
         searchButton = (Button) findViewById(R.id.search_button);
         teamButton = (Button) findViewById(R.id.team_button);
+        updateProfileButton = (Button) findViewById(R.id.home_update_profile);
 
         username.setVisibility(View.INVISIBLE);
         mmRank.setVisibility(View.INVISIBLE);
@@ -72,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         weapon.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
         teamButton.setVisibility(View.INVISIBLE);
+        updateProfileButton.setVisibility(View.INVISIBLE);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -95,6 +98,14 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent searchIntent = new Intent(HomeActivity.this, SearchActivity.class);
                 startActivity(searchIntent);
+            }
+        });
+
+        updateProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent editProfileIntent = new Intent(HomeActivity.this, EditProfileActivity.class);
+                startActivityForResult(editProfileIntent, 2);
             }
         });
     }
@@ -136,6 +147,7 @@ public class HomeActivity extends AppCompatActivity {
         weapon.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
         teamButton.setVisibility(View.VISIBLE);
+        updateProfileButton.setVisibility(View.VISIBLE);
     }
 
     private void findUser(DataSnapshot dataSnapshot) {
