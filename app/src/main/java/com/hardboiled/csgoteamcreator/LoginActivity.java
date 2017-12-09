@@ -1,6 +1,10 @@
 package com.hardboiled.csgoteamcreator;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +42,18 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // wait 30 seconds
+//        long timeToAdd = 30000;
+        // wait a day
+        long timeToAdd = 86400000;
+        // starting alarm
+        Intent intent = new Intent(LoginActivity.this, AlarmReceiver.class);
+        intent.putExtra("NotificationText", "some text");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeToAdd, pendingIntent);
+        // end of alarm code
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         email = (EditText) findViewById(R.id.value_email);
