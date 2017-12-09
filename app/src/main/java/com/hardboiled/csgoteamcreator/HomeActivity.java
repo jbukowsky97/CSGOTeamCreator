@@ -68,6 +68,8 @@ public class HomeActivity extends AppCompatActivity {
         updateProfileButton = (Button) findViewById(R.id.home_update_profile);
         urlButton = (Button) findViewById(R.id.url_button);
 
+        setButtonsEnabled(true);
+
         username.setVisibility(View.INVISIBLE);
         mmRank.setVisibility(View.INVISIBLE);
         eseaName.setVisibility(View.INVISIBLE);
@@ -102,7 +104,6 @@ public class HomeActivity extends AppCompatActivity {
                 setButtonsEnabled(false);
                 Intent searchIntent = new Intent(HomeActivity.this, SearchActivity.class);
                 startActivity(searchIntent);
-                setButtonsEnabled(true);
             }
         });
 
@@ -112,7 +113,6 @@ public class HomeActivity extends AppCompatActivity {
                 setButtonsEnabled(false);
                 Intent editProfileIntent = new Intent(HomeActivity.this, EditProfileActivity.class);
                 startActivityForResult(editProfileIntent, 2);
-                setButtonsEnabled(true);
             }
         });
 
@@ -123,7 +123,6 @@ public class HomeActivity extends AppCompatActivity {
                 Intent urlIntent = new Intent(HomeActivity.this, SteamActivity.class);
                 urlIntent.putExtra("url", currentUser.getUrl());
                 startActivity(urlIntent);
-                setButtonsEnabled(true);
             }
         });
     }
@@ -144,7 +143,6 @@ public class HomeActivity extends AppCompatActivity {
                     setButtonsEnabled(false);
                     Intent createTeam = new Intent(HomeActivity.this, CreateTeamActivity.class);
                     startActivityForResult(createTeam, CODE_CREATE_TEAM);
-                    setButtonsEnabled(true);
                 }
             });
         }else {
@@ -156,7 +154,6 @@ public class HomeActivity extends AppCompatActivity {
                     Intent teamIntent = new Intent(HomeActivity.this, TeamActivity.class);
                     teamIntent.putExtra("teamname", currentUser.getTeam());
                     startActivity(teamIntent);
-                    setButtonsEnabled(true);
                 }
             });
         }

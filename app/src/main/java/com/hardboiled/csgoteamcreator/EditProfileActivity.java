@@ -72,6 +72,8 @@ public class EditProfileActivity extends AppCompatActivity {
         weaponSpinner.setVisibility(View.INVISIBLE);
         updateProfileButton.setVisibility(View.INVISIBLE);
 
+        setButtonsEnabled(true);
+
         Query query = databaseReference.child("users");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -113,6 +115,7 @@ public class EditProfileActivity extends AppCompatActivity {
         updateProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 if (url.getText().toString().matches(".*\\W.*")) {
                     Snackbar.make(findViewById(R.id.activity_edit_profile_id), "Steam URL cannot have spaces or special characters",
                             Snackbar.LENGTH_SHORT)
@@ -121,6 +124,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
 
                 databaseReference.child("users").child(currentUser.getUsername()).child("rank").setValue(rankSpinner.getSelectedItem().toString());
+                databaseReference.child("users").child(currentUser.getUsername()).child("url").setValue(url.getText().toString());
                 databaseReference.child("users").child(currentUser.getUsername()).child("eseaname").setValue(eseaName.getText().toString());
                 databaseReference.child("users").child(currentUser.getUsername()).child("esearank").setValue(eseaRankSpinner.getSelectedItem().toString());
                 databaseReference.child("users").child(currentUser.getUsername()).child("weapon").setValue(weaponSpinner.getSelectedItem().toString());
@@ -173,6 +177,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     .show();
             return;
         }
+    }
+
+    private void setButtonsEnabled(boolean enabled) {
+        updateProfileButton.setEnabled(enabled);
     }
 
     private void initializeRankIcons() {

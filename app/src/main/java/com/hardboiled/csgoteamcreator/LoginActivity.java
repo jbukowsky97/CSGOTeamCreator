@@ -70,53 +70,11 @@ public class LoginActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.login_activity_id), "Invalid credentials, please ensure the account exists.",
                                     Snackbar.LENGTH_SHORT)
                                     .show();
-                            setButtonsEnabled(true);
                             return;
                         }else {
                             final Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             databaseReference = FirebaseDatabase.getInstance().getReference();
-                            /*final String uid = task.getResult().getUser().getUid();
-                            Query query = databaseReference.child("users");
-                            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        for (DataSnapshot value : dataSnapshot.getChildren()) {
-                                            if (((HashMap<String, String>) value.getValue()).containsValue(uid)) {
-                                                for (Map.Entry<String, String> entry : ((HashMap<String, String>) value.getValue()).entrySet()) {
-                                                    homeIntent.putExtra(entry.getKey(), entry.getValue());
-                                                }
-                                                if (!((HashMap<String, String>) value.getValue()).containsKey("team")) {
-                                                    homeIntent.putExtra("team", "N/A");
-                                                }
-                                                if (!((HashMap<String, String>) value.getValue()).containsKey("leader")) {
-                                                    homeIntent.putExtra("leader", false);
-                                                }
-                                                break;
-                                            }
-                                        }
-                                        startActivity(homeIntent);
-                                        setButtons(true);
-                                    } else {
-                                        Snackbar.make(findViewById(R.id.activity_sign_up_id), "Unable to find user in database",
-                                                Snackbar.LENGTH_SHORT)
-                                                .show();
-                                        setButtons(true);
-                                        return;
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Snackbar.make(findViewById(R.id.activity_sign_up_id), "Operation cancelled.",
-                                            Snackbar.LENGTH_SHORT)
-                                            .show();
-                                    setButtons(true);
-                                    return;
-                                }
-                            });*/
                             startActivity(homeIntent);
-                            setButtonsEnabled(true);
                         }
                     }
                 });
@@ -130,9 +88,14 @@ public class LoginActivity extends AppCompatActivity {
                 setButtonsEnabled(false);
                 Intent signupIntent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(signupIntent);
-                setButtonsEnabled(true);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setButtonsEnabled(true);
     }
 
     private void setButtonsEnabled(boolean enabled) {
