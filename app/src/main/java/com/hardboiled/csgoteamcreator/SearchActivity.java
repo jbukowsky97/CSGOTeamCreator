@@ -154,7 +154,7 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 }
                 if (!uid.equals(uidLocal)) {
-                    users.add(new User(uid, username, rankIcons.get(rank), eseaName, eseaRank, role, weapon, team, leader));
+                    users.add(new User(uidLocal, username, rankIcons.get(rank), eseaName, eseaRank, role, weapon, team, leader));
                 }
             }
             sort_users("MM Rank (High to Low)");

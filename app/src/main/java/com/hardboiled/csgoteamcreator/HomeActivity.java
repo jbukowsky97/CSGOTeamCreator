@@ -46,26 +46,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
         initializeRankIcons();
 
-        Query query = databaseReference.child("users");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("LOADING USER");
-                findUser(dataSnapshot);
-                System.out.println("SETTING UP");
-                setup();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                return;
-            }
-        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         username = (TextView) findViewById(R.id.value_username);
         mmRank = (ImageView) findViewById(R.id.mm_rank_image);
@@ -75,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         weapon = (TextView) findViewById(R.id.value_favorite_weapon);
         searchButton = (Button) findViewById(R.id.search_button);
         teamButton = (Button) findViewById(R.id.team_button);
-        
+
         username.setVisibility(View.INVISIBLE);
         mmRank.setVisibility(View.INVISIBLE);
         eseaName.setVisibility(View.INVISIBLE);
@@ -84,6 +72,23 @@ public class HomeActivity extends AppCompatActivity {
         weapon.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
         teamButton.setVisibility(View.INVISIBLE);
+
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = databaseReference.child("users");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                findUser(dataSnapshot);
+                setup();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                return;
+            }
+        });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
