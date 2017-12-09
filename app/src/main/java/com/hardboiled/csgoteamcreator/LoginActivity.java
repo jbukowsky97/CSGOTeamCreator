@@ -42,17 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // wait 30 seconds
-//        long timeToAdd = 30000;
-        // wait a day
-        long timeToAdd = 86400000;
-        // starting alarm
-        Intent intent = new Intent(LoginActivity.this, AlarmReceiver.class);
-        intent.putExtra("NotificationText", "some text");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeToAdd, pendingIntent);
-        // end of alarm code
+
+        createAlarm();
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -146,5 +137,19 @@ public class LoginActivity extends AppCompatActivity {
     private void setButtons(boolean enabled) {
         login.setEnabled(enabled);
         createAccount.setEnabled(enabled);
+    }
+
+    private void createAlarm() {
+        // wait 10 seconds
+        long timeToAdd = 10000;
+        // wait a day
+//        long timeToAdd = 86400000;
+        // starting alarm
+        Intent intent = new Intent(LoginActivity.this, AlarmReceiver.class);
+        intent.putExtra("NotificationText", "some text");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeToAdd, pendingIntent);
+        // end of alarm code
     }
 }
