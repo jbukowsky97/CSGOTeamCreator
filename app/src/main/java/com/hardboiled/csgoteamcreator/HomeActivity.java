@@ -99,16 +99,31 @@ public class HomeActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 Intent searchIntent = new Intent(HomeActivity.this, SearchActivity.class);
                 startActivity(searchIntent);
+                setButtonsEnabled(true);
             }
         });
 
         updateProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setButtonsEnabled(false);
                 Intent editProfileIntent = new Intent(HomeActivity.this, EditProfileActivity.class);
                 startActivityForResult(editProfileIntent, 2);
+                setButtonsEnabled(true);
+            }
+        });
+
+        urlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setButtonsEnabled(false);
+                Intent urlIntent = new Intent(HomeActivity.this, SteamActivity.class);
+                urlIntent.putExtra("url", currentUser.getUrl());
+                startActivity(urlIntent);
+                setButtonsEnabled(true);
             }
         });
     }
@@ -208,13 +223,26 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_CREATE_TEAM) {
             if (resultCode == Activity.RESULT_OK) {
-                Intent teamIntent = new Intent(HomeActivity.this, TeamActivity.class);
-                startActivity(teamIntent);
+                final Intent teamIntent = new Intent(HomeActivity.this, TeamActivity.class);
+                Query query = databaseReference.child("users");
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        findUser(dataSnapshot);
+                        teamIntent.putExtra("teamname", currentUser.getTeam());
+                        startActivity(teamIntent);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        return;
+                    }
+                });
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -228,5 +256,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setButtonsEnabled(boolean enabled) {
         searchButton.setEnabled(enabled);
         teamButton.setEnabled(enabled);
+        updateProfileButton.setEnabled(enabled);
+        urlButton.setEnabled(enabled);
     }
 }

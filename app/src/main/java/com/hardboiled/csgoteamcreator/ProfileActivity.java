@@ -142,6 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (currentUser.isLeader() && !currentUser.getTeam().equals("N/A") && userProfile.getTeam().equals(currentUser.getTeam())) {
             removeTeamButton.setVisibility(View.VISIBLE);
         }
+
         addTeamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,6 +175,21 @@ public class ProfileActivity extends AppCompatActivity {
                 setButtonsEnabled(true);
             }
         });
+        if (userProfile.getTeam().equals("N/A")) {
+            teamButton.setVisibility(View.INVISIBLE);
+        }else {
+            teamButton.setText(userProfile.getTeam());
+            teamButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setButtonsEnabled(false);
+                    Intent teamIntent = new Intent(ProfileActivity.this, TeamActivity.class);
+                    teamIntent.putExtra("teamname", userProfile.getTeam());
+                    startActivity(teamIntent);
+                    setButtonsEnabled(true);
+                }
+            });
+        }
     }
 
     private void initializeRankIcons() {
