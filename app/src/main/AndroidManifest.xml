@@ -21,16 +21,24 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".CardViewActivity" />
         <activity android:name=".TeamActivity" />
+<<<<<<< HEAD
         <activity android:name=".SteamActivity"></activity>
         <activity android:name=".CreateTeamActivity"></activity>
         <activity android:name=".ProfileActivity"></activity>
+=======
+        <activity android:name=".CreateTeamActivity" />
+        <activity android:name=".ProfileActivity" />
+>>>>>>> 398c263f90786b9778f47d7143f3084149623ab3
 
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>
